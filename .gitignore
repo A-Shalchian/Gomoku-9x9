@@ -1,0 +1,15 @@
+# Ignore compiled Java class files
+*.class
+
+# Ignore compiled JAR files
+*.jar
+
+# Ignore IDE and editor-specific files
+/.idea/
+/*.iml
+*.log
+*.DS_Store
+
+# Ignore build directories
+/build/
+/out/
