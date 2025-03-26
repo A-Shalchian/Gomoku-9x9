@@ -135,10 +135,10 @@ public class Gomuko {
             
             displayBoard();
             
-            if (checkWin(currentSymbol)) {
+            if (botLogic.checkWin(board, currentSymbol)) {
                 printWinMessage(currentSymbol);
                 gameOver = true;
-            } else if (isBoardFull()) {
+            } else if (botLogic.isBoardFull(board)) {
                 printDrawMessage();
                 gameOver = true;
             }
@@ -174,76 +174,6 @@ public class Gomuko {
         System.out.println("AI places " + symbol + " at position (" + (row + 1) + ", " + (col + 1) + ")");
     }
     
-    private boolean checkWin(char symbol) {
-        // Check horizontal
-        for (int i = 0; i < BOARD_SIZE; i++) {
-            for (int j = 0; j <= BOARD_SIZE - 5; j++) {
-                boolean win = true;
-                for (int k = 0; k < 5; k++) {
-                    if (board[i][j + k] != symbol) {
-                        win = false;
-                        break;
-                    }
-                }
-                if (win) return true;
-            }
-        }
-        
-        // Check vertical
-        for (int i = 0; i <= BOARD_SIZE - 5; i++) {
-            for (int j = 0; j < BOARD_SIZE; j++) {
-                boolean win = true;
-                for (int k = 0; k < 5; k++) {
-                    if (board[i + k][j] != symbol) {
-                        win = false;
-                        break;
-                    }
-                }
-                if (win) return true;
-            }
-        }
-        
-        // Check diagonal (top-left to bottom-right)
-        for (int i = 0; i <= BOARD_SIZE - 5; i++) {
-            for (int j = 0; j <= BOARD_SIZE - 5; j++) {
-                boolean win = true;
-                for (int k = 0; k < 5; k++) {
-                    if (board[i + k][j + k] != symbol) {
-                        win = false;
-                        break;
-                    }
-                }
-                if (win) return true;
-            }
-        }
-        
-        // Check diagonal (top-right to bottom-left)
-        for (int i = 0; i <= BOARD_SIZE - 5; i++) {
-            for (int j = BOARD_SIZE - 1; j >= 4; j--) {
-                boolean win = true;
-                for (int k = 0; k < 5; k++) {
-                    if (board[i + k][j - k] != symbol) {
-                        win = false;
-                        break;
-                    }
-                }
-                if (win) return true;
-            }
-        }
-        
-        return false;
-    }
-    
-    private boolean isBoardFull() {
-        for (int i = 0; i < BOARD_SIZE; i++) {
-            for (int j = 0; j < BOARD_SIZE; j++) {
-                if (board[i][j] == EMPTY) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
     
     private void displayBoard() {
         System.out.println();

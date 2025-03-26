@@ -107,7 +107,7 @@ public class BotLogic {
         }
         return win;
     }
-    private boolean checkWin(char[][] board, char symbol) {
+    public boolean checkWin(char[][] board, char symbol) {
         // Check horizontal
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j <= BOARD_SIZE - 5; j++) {
@@ -139,7 +139,7 @@ public class BotLogic {
         return false;
     }
     
-    private boolean isBoardFull(char[][] board) {
+    public boolean isBoardFull(char[][] board) {
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
                 if (board[i][j] == EMPTY) {
