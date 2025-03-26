@@ -2,11 +2,7 @@
 
 A classic Five-in-a-Row game implemented in Java with an AI opponent. 
 
-<<<<<<< HEAD
 ![Empty Gomoku board](/assets/starterBoard.png)
-=======
-![Empty Gomoku board](/assets/emptyBoard.png)
->>>>>>> 0fbca528e2fb52531c46ef977d01ccca1d00b874
 ## 🚀 Features
 
 - 🎮 9x9 game board for a faster-paced experience
