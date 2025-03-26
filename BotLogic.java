@@ -12,6 +12,7 @@ public class BotLogic {
     private int[] findBestMove(char[][] board, char symbol) {
         int bestScore = Integer.MIN_VALUE;
         int[] bestMove = new int[2];
+        // symbol is the bot's symbol
         char opponentSymbol = (symbol == BLACK) ? WHITE : BLACK;
         
         // For each empty cell, try placing the symbol and evaluate the board
@@ -53,15 +54,17 @@ public class BotLogic {
     }
     
     private int minimax(char[][] board, int depth, boolean isMaximizing, char symbol, char opponentSymbol, int alpha, int beta) {
-        // Base cases
-        if (checkWin(board, symbol)) return 10 - depth;
-        if (checkWin(board, opponentSymbol)) return depth - 10;
-        if (isBoardFull(board) || depth == MAX_DEPTH) return 0;
+        // base cases
+        if (checkWin(board, symbol)) return 10 - depth; // bot wins
+        if (checkWin(board, opponentSymbol)) return depth - 10; // opponent wins
+        if (isBoardFull(board) || depth == MAX_DEPTH) return 0; // draw
         
         if (isMaximizing) {
             int maxEval = Integer.MIN_VALUE;
+            // looping through all possible moves
             for (int i = 0; i < BOARD_SIZE; i++) {
                 for (int j = 0; j < BOARD_SIZE; j++) {
+                    // only considers empty cells for moves
                     if (board[i][j] == EMPTY) {
                         board[i][j] = symbol;
                         int eval = minimax(board, depth + 1, false, symbol, opponentSymbol, alpha, beta);
@@ -91,60 +94,45 @@ public class BotLogic {
         }
     }
     
+    // created this 
+    private boolean checkFiveInARow(char[][] board, char symbol, int startX, int startY, int deltaX, int deltaY) {
+        boolean win = true;
+        for (int k = 0; k < 5; k++) {
+            int x = startX + k * deltaX;
+            int y = startY + k * deltaY;
+            if (x < 0 || x >= BOARD_SIZE || y < 0 || y >= BOARD_SIZE || board[x][y] != symbol) {
+                win = false;
+                break;
+            }
+        }
+        return win;
+    }
     private boolean checkWin(char[][] board, char symbol) {
         // Check horizontal
         for (int i = 0; i < BOARD_SIZE; i++) {
             for (int j = 0; j <= BOARD_SIZE - 5; j++) {
-                boolean win = true;
-                for (int k = 0; k < 5; k++) {
-                    if (board[i][j + k] != symbol) {
-                        win = false;
-                        break;
-                    }
-                }
-                if (win) return true;
+                if (checkFiveInARow(board, symbol, i, j, 0, 1)) return true;
             }
         }
         
         // Check vertical
         for (int i = 0; i <= BOARD_SIZE - 5; i++) {
             for (int j = 0; j < BOARD_SIZE; j++) {
-                boolean win = true;
-                for (int k = 0; k < 5; k++) {
-                    if (board[i + k][j] != symbol) {
-                        win = false;
-                        break;
-                    }
-                }
-                if (win) return true;
+                if (checkFiveInARow(board, symbol, i, j, 1, 0)) return true;
             }
         }
         
         // Check diagonal (top-left to bottom-right)
         for (int i = 0; i <= BOARD_SIZE - 5; i++) {
             for (int j = 0; j <= BOARD_SIZE - 5; j++) {
-                boolean win = true;
-                for (int k = 0; k < 5; k++) {
-                    if (board[i + k][j + k] != symbol) {
-                        win = false;
-                        break;
-                    }
-                }
-                if (win) return true;
+                if (checkFiveInARow(board, symbol, i, j, 1, 1)) return true;
             }
         }
         
         // Check diagonal (top-right to bottom-left)
         for (int i = 0; i <= BOARD_SIZE - 5; i++) {
             for (int j = BOARD_SIZE - 1; j >= 4; j--) {
-                boolean win = true;
-                for (int k = 0; k < 5; k++) {
-                    if (board[i + k][j - k] != symbol) {
-                        win = false;
-                        break;
-                    }
-                }
-                if (win) return true;
+                if (checkFiveInARow(board, symbol, i, j, 1, -1)) return true;
             }
         }
         
