@@ -5,6 +5,11 @@ public class Gomuko {
     private static final char EMPTY = '.';
     private static final char BLACK = 'B'; 
     private static final char WHITE = 'W';
+    private static final String RESET = "\u001B[0m";
+    private static final String WHITE_COLOR = "\u001B[37m";  // Bright white
+    private static final String HEADER = "\u001B[34m";
+    private static final String BORDER = "\u001B[35m";
+    private static final String WIN = "\u001B[32m";
     
     private char[][] board;
     private String player1Name;
@@ -131,10 +136,10 @@ public class Gomuko {
             displayBoard();
             
             if (checkWin(currentSymbol)) {
-                System.out.println(currentPlayer + " wins!");
+                printWinMessage(currentSymbol);
                 gameOver = true;
             } else if (isBoardFull()) {
-                System.out.println("The game is a draw!");
+                printDrawMessage();
                 gameOver = true;
             }
             
@@ -243,20 +248,38 @@ public class Gomuko {
     private void displayBoard() {
         System.out.println();
         
-        // Print column numbers
-        System.out.print("   ");
+        // Print column numbers with color
+        System.out.print(HEADER + "   ");
         for (int j = 0; j < BOARD_SIZE; j++) {
             System.out.printf("%2d ", j + 1);
         }
-        System.out.println();
-        System.out.println("  " + "---".repeat(BOARD_SIZE) + "-"); // Added top border
+        System.out.println(RESET);
+        System.out.println(BORDER + "  " + "---".repeat(BOARD_SIZE) + "-" + RESET);
+        
         for (int i = 0; i < BOARD_SIZE; i++) {
-            System.out.printf("%2d|", i + 1);
+            System.out.printf(HEADER + "%2d" + BORDER + "|" + RESET, i + 1);
             for (int j = 0; j < BOARD_SIZE; j++) {
-                System.out.printf(" %c ", board[i][j]);
+                switch (board[i][j]) {
+                    case 'B':
+                        System.out.print(WHITE_COLOR + " B " + RESET);
+                        break;
+                    case 'W':
+                        System.out.print(WHITE_COLOR + " W " + RESET);
+                        break;
+                    default:
+                        System.out.print(" . ");
+                }
             }
-            System.out.println("|"); // Added side border
+            System.out.println(BORDER + "|" + RESET);
         }
-        System.out.println("  " + "---".repeat(BOARD_SIZE) + "-"); // Added bottom border
+        System.out.println(BORDER + "  " + "---".repeat(BOARD_SIZE) + "-" + RESET);
+    }
+
+    private void printWinMessage(char winner) {
+        System.out.println(WIN + "\nPlayer " + (winner == 'B' ? "Black" : "White") + " wins!" + RESET);
+    }
+
+    private void printDrawMessage() {
+        System.out.println(WIN + "\nThe game is a draw!" + RESET);
     }
 }
